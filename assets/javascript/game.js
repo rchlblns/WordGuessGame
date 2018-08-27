@@ -1,4 +1,7 @@
-// List of character names than can be guessed
+//All the letters the user can choose from
+var alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+
+//Array of Super Mario characters
 var charName = [
     "mario", 
     "luigi", 
@@ -12,76 +15,88 @@ var charName = [
     "kamek",
     ];
 
-//Number of max guesses
-var maxGuess = 10;
-
-//Number of wins user has
-var wins = 0;
-
-//Array that holds correct guesses and blank letters
-var correctLetters = []
-
-//Where all incorrect guesses are stored
+var gameStart = false; 
+var userGuess = [];
+var maxGuess = 10; //Maximum guesses capped at 10
+var wins = 0; 
+var losses = 0;
 var wrongLetters = [];
-
-//Letters in current word
 var lettersCurrentWord = [];
-
-//Variables that hold references to places that we want to store things
-var directionsText = document.getElementById("directions-text");
-var winsText = document.getElementById("wins-text");
-var lossesText = document.getElementById("losses-text")
-var guessesLeft = document.getElementById("guesses-left");
-var currentName = document.getElementById("current-name");
-var wrongGuess = document.getElementById("wrong-name");
-
-// When user presses a key
-document.onkeyup = function(event) {
-    
-    //this determines what key was pressed
-    var userGuess = event.key;
-
-console.log(userGuess);
-}
+var wordsToDashes = []; 
 
 //Computer randomly chooses a character name
 var randomName = charName[Math.floor(Math.random() * charName.length)];
 
-//Split current character name into string of letters
-lettersCurrentWord = randomName.split("");
+// Starting the game
+function startGame() {
+    gameStart = true;
+    maxGuess = 10;
+    //Array that holds character name as letters
+    lettersCurrentWord = randomName.split("");
+    //Letter gets changed into dashes
+    wordsToDashes = changeToDashes(randomName);
+    //Array that holds dashes
+    dashesCurrentWord = wordsToDashes.split("");
+    document.getElementById("current-word").innerHTML = wordsToDashes;
+    document.getElementById("wrong-guess").innerHTML = wrongLetters;    
+    document.getElementById("guesses-left").innerHTML = "Guesses left: " + maxGuess;
 
-console.log(lettersCurrentWord)
-
-//Blanks to track how many letters are in each word
-var blanks = lettersCurrentWord.length;
-
-for (var i =0; i < blanks; i++) {
-    correctLetters.push("_");
+console.log(randomName);
+console.log(wordsToDashes);
 }
 
-console.log(correctLetters);
+//Function to change words into dashes
+function changeToDashes(word){
+    var dashes = "";
+    for (var i = 0; i <word.length -1; i++) {
+        dashes += " _ ";
+    }
+    dashes += " _ ";
+    return dashes;
+}
 
-//Modifies to reflect character name that user is currently guessing 
+// When user presses a key
+document.onkeyup = function(event) {
+    
+    if (!gameStart){
+        //game is started
+        startGame();
+        //this determines what key was pressed
+        var userGuess = String.fromCharCode(event.keyCode).toLowerCase();
+    }
 
-document.getElementById("current-name").innerHTML = "Find the missing letters" + lettersCurrentWord.join();
+    else {
+        playGame();
+    }
 
-//If user presses a letter than is part of the character's name
-// if (userGuess === letterCurrentWord) {
-//     userGuess.push(randomName);
+console.log(userGuess);
+}
+
+// //Functionality of the game
+// function playGame() 
+// var letter = keyPressed;
+// if (letter === dashesCurrentWord[i]) {
+//     showLetter();
 // }
-// else {
-//     userGuess.push(wrongLetters);
-// }
 
-// }
+//Displays letter on page if it's in the current word
+function showLetter(letter) {
+    for (var i = 0; i < currentWord.length; i++) {
+        if (userGuess === lettersCurrentWord[i]) {
+            dashesArray[i * 2] = userGuess;
+            console.log(dashesArray);
+        }
+    }
+    document.getElementById("current-word").innerHTML = dashesArray.join("");
+    checkForWin();
+}
 
-
-
-// // Hide the directions when key is pressed
-// directionsText.textcontent=" ";
-
-//Displays wins/losses record and tries left/guesses so far
-// winsText.textcontent = ""
-// lossesText.textcontent = ""
-// triesLeft.textcontent = ""
-// currentName.textcontent = ""
+//When game is won
+function checkForWin() {
+    if (dashesArray.indexOf("_") === -1) {
+        alert("Good job! The correct answer is" + currentWord);
+        wins++;
+        document.getElementById("wins-text").innerHTML = wins;
+        startGame();
+    }
+}
