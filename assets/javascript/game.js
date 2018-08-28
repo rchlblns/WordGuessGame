@@ -13,6 +13,8 @@ var charName = [
     "toad",
     "boo",
     "kamek",
+    "toadette",
+    "goomba",
     ];
 
 var gameStart = false; 
@@ -55,22 +57,22 @@ function changeToDashes(letters){
     }
 }
 
-// When user presses a key
-document.onkeyup = function(event) {
+// // When user presses a key
+// document.onkeyup = function(event) {
     
-    if (!gameStart){
-        //game is started
-        startGame();
-        //this determines what key was pressed
-        var userGuess = String.fromCharCode(event.key).toLowerCase();
-    }
+//     if (!gameStart){
+//         //game is started
+//         startGame();
+//         //this determines what key was pressed
+//         var userGuess = String.fromCharCode(event.key).toLowerCase();
+//     }
 
-    else {
-        playGame(event.key);
-    }
+//     else {
+//         playGame(event.key);
+//     }
 
-console.log(event.key);
-}
+// console.log(event.key);
+// }
 
 //Functionality of the game
 function playGame(letter) { 
@@ -89,6 +91,12 @@ function playGame(letter) {
                 document.getElementById("guesses-left").innerHTML = "Guesses left: " + maxGuess;
                 wrongLetters.push(letter);
                 document.getElementById("wrong-guess").innerHTML = "Wrong letters: " + wrongLetters;
+                if (maxGuess === 0) {
+                    alert("Sorry! The correct answer is " + randomName);
+                    losses++;
+                    document.getElementById("losses-text").innerHTML = "Losses: " + losses;
+                    // startGame();  
+                }
             }
 }
 
@@ -106,15 +114,24 @@ function showLetter(letter) {
 //Ending the game
 function checkForWin() {
     if (correctGuesses.toString() === lettersCurrentWord.toString()) {
-        alert("Awesome! You guessed the word!");
         wins++;
         document.getElementById("wins-text").innerHTML = "Wins: " + wins;
+        alert("Awesome! You guessed the word!");
         // startGame();
     }
-    else if (maxGuess === 0) {
-        alert("Sorry! The correct answer is " + randomName);
-        losses++;
-        document.getElementById("losses-text").innerHTML = "Losses: " + losses;
-        // startGame();  
+}
+
+// When user presses a key
+document.onkeyup = function(event) {
+    
+    if (!gameStart){
+        //game is started
+        startGame();
     }
+
+    else {
+        playGame(event.key);
+    }
+
+console.log(event.key);
 }

@@ -1,0 +1,28 @@
+@font-face {
+    font-family: "SuperMario";
+    src: url("../imagesandsounds/");
+}
+
+body {
+    background-image: url("../imagesandsounds/supermario.png");
+    font-family: "Karla", sans-serif;
+}
+
+h1 {
+    font-size: 50px;
+}
+
+.mario {
+    font-family: "SuperMario";
+    font-size: 60px;
+    color: red;
+}
+
+p {
+    font-size: 25px;
+}
+
+#current-word {
+    font-weight: bold;
+    font-size: 35px;
+}
