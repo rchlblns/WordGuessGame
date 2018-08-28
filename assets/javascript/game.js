@@ -21,8 +21,8 @@ var maxGuess = 10; //Maximum guesses capped at 10
 var wins = 0; 
 var losses = 0;
 var wrongLetters = [];
-var lettersCurrentWord = [];
-var wordsToDashes = []; 
+var lettersCurrentWord = []; //Holds letters in character name
+var nameAsDashes = []; //Holds letters as dashes
 
 //Computer randomly chooses a character name
 var randomName = charName[Math.floor(Math.random() * charName.length)];
@@ -31,23 +31,21 @@ var randomName = charName[Math.floor(Math.random() * charName.length)];
 function startGame() {
     gameStart = true;
     maxGuess = 10;
-    //Array that holds character name as letters
     lettersCurrentWord = randomName.split("");
-    //Letter gets changed into dashes
-    wordsToDashes = changeToDashes(randomName);
+    nameAsDashes = changeToDashes(randomName);
     //Array that holds dashes
-    dashesCurrentWord = wordsToDashes.split("");
-    document.getElementById("current-word").innerHTML = wordsToDashes;
-    document.getElementById("wrong-guess").innerHTML = wrongLetters;    
+    dashesCurrentWord = nameAsDashes.split("");
+    document.getElementById("current-word").innerHTML = nameAsDashes;
+    document.getElementById("wrong-guess").innerHTML = "Wrong letters:" + wrongLetters;    
     document.getElementById("guesses-left").innerHTML = "Guesses left: " + maxGuess;
 
 console.log(randomName);
-console.log(wordsToDashes);
+console.log(nameAsDashes);
 }
 
 //Function to change words into dashes
 function changeToDashes(word){
-    var dashes = "";
+    var dashes = " _ ";
     for (var i = 0; i <word.length -1; i++) {
         dashes += " _ ";
     }
@@ -62,38 +60,55 @@ document.onkeyup = function(event) {
         //game is started
         startGame();
         //this determines what key was pressed
-        var userGuess = String.fromCharCode(event.keyCode).toLowerCase();
+        var userGuess = String.fromCharCode(event.key).toLowerCase();
     }
 
     else {
-        playGame();
+        playGame(event.key);
     }
 
-console.log(userGuess);
+console.log(event.key);
 }
 
-// //Functionality of the game
-// function playGame() 
-// var letter = keyPressed;
-// if (letter === dashesCurrentWord[i]) {
-//     showLetter();
-// }
+//Functionality of the game
+function playGame(letter) { 
+
+    var letter = letter.toLowerCase();
+
+        if (alphabet.indexOf(letter) > -1 === lettersCurrentWord.indexOf(letter) > -1) {
+            showLetter(letter);
+            }
+            else if (userGuess.indexOf(letter) > -1) {
+                return;
+            }    
+            else {
+                maxGuess--;
+                document.getElementById("wrong-guess").innerHTML = "Wrong letters: " + wrongLetters.push(letter);
+            }
+        }
+
+        if (maxGuess === 0) {
+            alert("Sorry! The correct answer is " + randomName);
+            losses++;
+            document.getElementById("losses-text").innerHTML = "Losses: " + losses;
+            startGame();
+        } 
 
 //Displays letter on page if it's in the current word
 function showLetter(letter) {
-    for (var i = 0; i < currentWord.length; i++) {
-        if (userGuess === lettersCurrentWord[i]) {
-            dashesArray[i * 2] = userGuess;
-            console.log(dashesArray);
+    for (var i = 0; i < randomName.length; i++) {
+        if (letter === lettersCurrentWord[i]) {
+            dashesCurrentWord[i * 2] = letter;
+            console.log(dashesCurrentWord);
         }
     }
-    document.getElementById("current-word").innerHTML = dashesArray.join("");
+    document.getElementById("current-word").innerHTML = dashesCurrentWord.join();
     checkForWin();
 }
 
 //When game is won
 function checkForWin() {
-    if (dashesArray.indexOf("_") === -1) {
+    if (dashesCurrentWord.indexOf("_") === -1) {
         alert("Good job! The correct answer is" + currentWord);
         wins++;
         document.getElementById("wins-text").innerHTML = wins;
