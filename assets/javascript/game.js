@@ -16,26 +16,26 @@ var charName = [
     ];
 
 var gameStart = false; 
-var userGuess = [];
 var maxGuess = 10; //Maximum guesses capped at 10
 var wins = 0; 
 var losses = 0;
 var wrongLetters = [];
 var lettersCurrentWord = []; //Holds letters in character name
 var dashesCurrentWord = []; //Holds name as dashes
+var correctGuesses = []; //Holds correct user guesses
 
 //Computer randomly chooses a character name
-var randomName = charName[Math.floor(Math.random() * charName.length)];
+randomName = charName[Math.floor(Math.random() * charName.length)];
 
 // Starting the game
 function startGame() {
     gameStart = true;
     maxGuess = 10;
-    wins = 0;
-    losses = 0;
+    wrongLetters = [];
+    randomName = charName[Math.floor(Math.random() * charName.length)];
     lettersCurrentWord = randomName.split("");
     nameAsDashes = changeToDashes(lettersCurrentWord);
-    document.getElementById("current-word").innerHTML = dashesCurrentWord;
+    document.getElementById("current-word").innerHTML = dashesCurrentWord.join("");
     document.getElementById("wrong-guess").innerHTML = "Wrong letters:" + wrongLetters;    
     document.getElementById("guesses-left").innerHTML = "Guesses left: " + maxGuess;
     document.getElementById("wins-text").innerHTML = "Wins: " + wins;
@@ -79,24 +79,18 @@ function playGame(letter) {
 
         if (alphabet.indexOf(letter) > -1 === lettersCurrentWord.indexOf(letter) > -1) {
             showLetter(letter);
+            correctGuesses.push(letter);
+            console.log(correctGuesses);
+            checkForWin();
 
             }
-            // else if (letter.indexOf(letter) > -1) {
-            //     return;
-            // }    
             else {
                 maxGuess--;
+                document.getElementById("guesses-left").innerHTML = "Guesses left: " + maxGuess;
                 wrongLetters.push(letter);
                 document.getElementById("wrong-guess").innerHTML = "Wrong letters: " + wrongLetters;
             }
-        }
-
-        if (maxGuess === 0) {
-            alert("Sorry! The correct answer is " + randomName);
-            losses++;
-            document.getElementById("losses-text").innerHTML = "Losses: " + losses;
-            startGame();
-        } 
+}
 
 //Displays letter on page if it's in the current word
 function showLetter(letter) {
@@ -109,11 +103,18 @@ function showLetter(letter) {
     document.getElementById("current-word").innerHTML = dashesCurrentWord.join("");
 }
 
-//When game is won
+//Ending the game
 function checkForWin() {
-    if (dashesCurrentWord.indexOf("_") === -1) {
-        alert("Good job! The correct answer is " + randomName + "!");
+    if (correctGuesses.toString() === lettersCurrentWord.toString()) {
+        alert("Awesome! You guessed the word!");
         wins++;
         document.getElementById("wins-text").innerHTML = "Wins: " + wins;
+        // startGame();
+    }
+    else if (maxGuess === 0) {
+        alert("Sorry! The correct answer is " + randomName);
+        losses++;
+        document.getElementById("losses-text").innerHTML = "Losses: " + losses;
+        // startGame();  
     }
 }
