@@ -6,16 +6,14 @@ var charName = [
     "mario", 
     "luigi", 
     "bowser", 
-    "princess peach",
-    "shy guy", 
-    "koopa troopa",
+    "princesspeach",
+    "shyguy", 
+    "cheepcheep",
     "yoshi",
     "toad",
     "boo",
     "kamek",
-    "toadette",
-    "goomba",
-    ];
+];
 
 var gameStart = false; 
 var maxGuess = 10; //Maximum guesses capped at 10
@@ -38,7 +36,7 @@ function startGame() {
     lettersCurrentWord = randomName.split("");
     nameAsDashes = changeToDashes(lettersCurrentWord);
     document.getElementById("current-word").innerHTML = dashesCurrentWord.join("");
-    document.getElementById("wrong-guess").innerHTML = "Wrong letters:" + wrongLetters;    
+    document.getElementById("wrong-letter").innerHTML = "Wrong letters:" + wrongLetters;    
     document.getElementById("guesses-left").innerHTML = "Guesses left: " + maxGuess;
     document.getElementById("wins-text").innerHTML = "Wins: " + wins;
     document.getElementById("losses-text").innerHTML = "Losses: " + losses;
@@ -57,22 +55,22 @@ function changeToDashes(letters){
     }
 }
 
-// // When user presses a key
-// document.onkeyup = function(event) {
+// When user presses a key
+document.onkeyup = function(event) {
     
-//     if (!gameStart){
-//         //game is started
-//         startGame();
-//         //this determines what key was pressed
-//         var userGuess = String.fromCharCode(event.key).toLowerCase();
-//     }
+    if (!gameStart){
+        //game is started
+        startGame();
+        //this determines what key was pressed
+        var userGuess = String.fromCharCode(event.key).toLowerCase();
+    }
 
-//     else {
-//         playGame(event.key);
-//     }
+    else {
+        playGame(event.key);
+    }
 
-// console.log(event.key);
-// }
+console.log(event.key);
+}
 
 //Functionality of the game
 function playGame(letter) { 
@@ -84,19 +82,13 @@ function playGame(letter) {
             correctGuesses.push(letter);
             console.log(correctGuesses);
             checkForWin();
-
             }
+            
             else {
                 maxGuess--;
                 document.getElementById("guesses-left").innerHTML = "Guesses left: " + maxGuess;
                 wrongLetters.push(letter);
-                document.getElementById("wrong-guess").innerHTML = "Wrong letters: " + wrongLetters;
-                if (maxGuess === 0) {
-                    alert("Sorry! The correct answer is " + randomName);
-                    losses++;
-                    document.getElementById("losses-text").innerHTML = "Losses: " + losses;
-                    // startGame();  
-                }
+                document.getElementById("wrong-letter").innerHTML = "Wrong letters: " + wrongLetters;
             }
 }
 
@@ -114,24 +106,15 @@ function showLetter(letter) {
 //Ending the game
 function checkForWin() {
     if (correctGuesses.toString() === lettersCurrentWord.toString()) {
+        alert("Awesome! You guessed the word!");
         wins++;
         document.getElementById("wins-text").innerHTML = "Wins: " + wins;
-        alert("Awesome! You guessed the word!");
         // startGame();
     }
-}
-
-// When user presses a key
-document.onkeyup = function(event) {
-    
-    if (!gameStart){
-        //game is started
-        startGame();
+    else if (maxGuess === 0) {
+        alert("Sorry! The correct answer is " + randomName);
+        losses++;
+        document.getElementById("losses-text").innerHTML = "Losses: " + losses;
+        // startGame();  
     }
-
-    else {
-        playGame(event.key);
-    }
-
-console.log(event.key);
 }

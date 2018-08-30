@@ -5,6 +5,7 @@
 
 body {
     background-image: url("../imagesandsounds/supermario.png");
+    background-attachment: fixed;
     font-family: "Karla", sans-serif;
 }
 
