@@ -1,3 +1,6 @@
+//Todos: fix game ending, remove duplicate letters from wrongletters array, figure out how to remove dashes on spaces in multiword character names
+
+
 //All the letters the user can choose from
 var alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 
@@ -20,8 +23,8 @@ var maxGuess = 10; //Maximum guesses capped at 10
 var wins = 0; 
 var losses = 0;
 var wrongLetters = [];
-var lettersCurrentWord = []; //Holds letters in character name
-var dashesCurrentWord = []; //Holds name as dashes
+var lettersCurrentWord = []; //array that holds letters of current character name
+var dashesCurrentWord = []; //array that holds current character name as dashes
 var correctGuesses = []; //Holds correct user guesses
 
 //Computer randomly chooses a character name

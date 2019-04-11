@@ -6,11 +6,11 @@
 body {
     background-image: url("../imagesandsounds/supermario.png");
     background-attachment: fixed;
-    font-family: "Karla", sans-serif;
+    font-family: "Press Start 2P", cursive;
 }
 
 h1 {
-    font-size: 50px;
+    font-size: 30px;
 }
 
 .mario {
@@ -25,5 +25,5 @@ p {
 
 #current-word {
     font-weight: bold;
-    font-size: 35px;
+    font-size: 28px;
 }
